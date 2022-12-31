@@ -32,7 +32,7 @@ class environment:
 
     def reset(self, first = False):
         self.files = [self.data_dir+"/"+x for x in os.listdir(self.data_dir) if "candle_classes" in x]
-        print("files:", self.files)
+        #print("files:", self.files)
         p = random.choice(self.files)
         print("using",p)
         self.candles = Load(p)
