@@ -29,7 +29,7 @@ I will not remake the ICT mentorship in this but here are some main ideas about 
   <li>Price is delivered by an algorithm, it is rule based and not random - <b>This can be learned by a neural network</b></li>
   <li>Intraday volatility is controlled to the Pip based on time and price</li>
   <li>A neural network should be able to determine the next draw on liquidity based on HTF charts and LTF charts and get fair value entries</li>
-  <li>The input data for the neural network needs to have the information to solve #3</li>
+  <li>The input data for the neural network needs to have the information to solve #3 - for this it has to carry information about pd arrays</li>
   <li>The neural network needs to be able to process the input data in a way that it can extract the important information (so not use just rnn with a simple price vector)</li>
 </ul>
 
@@ -37,7 +37,10 @@ I will not remake the ICT mentorship in this but here are some main ideas about 
 In this Project the DQN gets input data from multiple timeframes: m5, m15, h1, h4, d1 and its current position (1/-1 = long/short)
 The number of candles that get pushed into the DQN is based on the IPDA-Data-ranges of 20days, 40days and 60days lookback + look-forward = 120 candlesticks.
 This number is used on all timeframes.<br>
-Candlestick data is encoded as a 2d array like the chart picture. Every candle is represented by 1 column in the picture and scaled down to a given max height of the picture (at time of writing this is set to 100). Every timeframe will be a picture of 120px width and 100px height.<br>
+Candlestick data is encoded as a 2d array like the chart picture. Every candle is represented by 1 column in the picture and scaled down to a given max height of the picture (at time of writing this is set to 100). Every timeframe will be a picture of 120+1px width and 100+1px height. This height should be enough resolution to detect pd arrays. On lower resolution some pd arrays will not be visible and can not be used in the analysis by the model and will cause it to fail. <br>
+A 101. row in the picture will carry information about time of day (because the algorithm is based on <b>time</b> and price.<br> A 121. column will have just one active unit that represents the current price to make the input processing less difficult<br><br>
+The input images are filtered by a Conv2D with a  to detect
+
 
 <ul>
   <li>Brokerage fees are included in training (15/100000 - this is higher than a good broker offers)</li>
