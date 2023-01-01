@@ -2,7 +2,7 @@ updated version of solving_ipda_with_dqn_2.
 
 <h1>Solving the IPD-Algorithm using deep q learning</h1>
 
-In this project i try to train a DQN to navigate through the forex market and be a profitable trading Algorithm.
+In this project i try to train a DQN to navigate through the forex market and be a profitable trading algorithm.
 This is not the first project that tries to create a trading algorithm, but it is a very different approach from what is commonly used to do so.
 Most attempts in RL based trading focus on daily candlesticks, many do not include brokerage fees.
 They use some last 20 price bars and some indicators and try to squeeze it through an lstm expecting good results. 
@@ -16,11 +16,11 @@ For learning about the market i recommend the free Youtube library of Michael J.
 
 Here are just a few things that make trading NNs fail: 
 <ol>
-  <li> 20 bars say nearly nothing about price movement</li> 
+  <li> 20 bars say nearly nothing about future price movement</li> 
   <li> Price does not care about indicators</li>
   <li> With daily candlesticks there is not enough data to train a network without overfitting</li>
-  <li> Higher timeframe movement is influenced on fundamentals and this is not included in candlestick based training</li>
-  <li> Most Developers do know much about Deep learning and Neural Networks but do not know about the markets and do not know how to prepare candlestick data that a Neural Network can learn from it. A NN will not learn from a price vector of 20-40 bars scaled to -1 and 1 because it has no information that can be learned. (data preprocessing)
+  <li> Higher timeframe movement is influenced by fundamentals and this is not included in candlestick based training</li>
+  <li> Most developers do not know how the markets deliver price and as a result they do not know how to prepare candlestick data that a Neural Network can learn from it. A NN will not learn from a price vector of 20-40 bars scaled to -1 and 1 because it has no information that can be learned. 
 </ol>
     
 
