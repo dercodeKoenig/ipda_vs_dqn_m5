@@ -33,19 +33,41 @@ I will not remake the ICT mentorship in this but here are some main ideas about 
   <li>The neural network needs to be able to process the input data in a way that it can extract the important information (so not use just rnn with a simple price vector)</li>
 </ul>
 
+<br><br>
 <h3>How does this project implements the ideas listed above?</h3>
+<h4> 1: The model input data </h4>
 In this Project the DQN gets input data from multiple timeframes: m5, m15, h1, h4, d1 and its current position (1/-1 = long/short)
 The number of candles that get pushed into the DQN is based on the IPDA-Data-ranges of 20days, 40days and 60days lookback + look-forward = 120 candlesticks.
 This number is used on all timeframes.<br>
 Candlestick data is encoded as a 2d array like the chart picture. Every candle is represented by 1 column in the picture and scaled down to a given max height of the picture (at time of writing this is set to 100). Every timeframe will be a picture of 120+1px width and 100+1px height. This height should be enough resolution to detect pd arrays. On lower resolution some pd arrays will not be visible and can not be used in the analysis by the model and will cause it to fail. <br>
 A 101. row in the picture will carry information about time of day (because the algorithm is based on <b>time</b> and price.<br> A 121. column will have just one active unit that represents the current price to make the input processing less difficult<br><br>
-The input images are filtered by a Conv2D with a  to detect
 
+<h4>Example of input image</h4>
+the lowest row of the image represents time of day<br>
+the last column of the image represents the current price (the same as the closing price of the last candle)
+<img src = "r1.jpg" title="Input image">
 
+<h4>2: The model</h4>
+The input images are filtered by a Conv2D with a filter size of 9x9 (time of writing) to detect pd arrays. currently 64 filters (time of writing) are used. <br>
+The result will be a 101x121x64 image. The input image will be the channel 65 in the image. A Dense layer with 64 units is used to get the channels back to 64. <br>
+Every timestep has a column of 101px and 64 channels. There are 121 timesteps.<br>
+For every timestep the 101x64 data points are flattened to a single vector. The result is a data format of (batch_dim, timestep, features).<br>
+After some dense layers to lower the features dimension this can be pushed into transformer encoders (Transformers are just good at everything and i wanted to do somethig with transformers).<br>
+Because this is a DQN and not a generator we need a data format of (batch_dim, features) without a vector for every timestep. This is done by a simple GRU<br>
+After some dense layer post-processing the chart analysis is ready!<br><br>
+All charts will be processed by the same layers with the same weights because price is fractal and the imbalance of samples (5min vs 1D) would make the htf chart layers difficult to learn. This is why they all get the same weights.<br>
+When every chart is processed, the information will be put together to a single large vector. Everything after this is dense layer processing until the output layer.<br>
+The output layer has 2 neurons: first one for long, second for short.<br><br>
+Notice, there is no output for do nothing/hold. This is because if there is a do nothing action, it would be the most used action and there would be very few training samples for other actions. This Model is long or short. But always has to prefer one of it!<br><br>
+
+<h3>Main features of this Project</h3>
 <ul>
   <li>Brokerage fees are included in training (15/100000 - this is higher than a good broker offers)</li>
-  <li>Calculations are done on the 5min timeframe</li>
+  <li>Calculations are done on the 5min timeframe for high number of training samples and precision in trade execution (it is way more precise than enter a position on a daily close)</li>
   <li>training data is about 20 years on 15 currency pairs, 7/15 are USD pairs</li>
+  <li>The NN has an awareness of time and Price</li>
+  <li>The NN can detect and process PD-arrays</li>
+  <li>The NN uses multiple timeframes (this is important, trust me! (or watch ICT))</li>
 </ul>  
 
 
