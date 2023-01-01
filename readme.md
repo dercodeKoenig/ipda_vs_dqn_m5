@@ -75,6 +75,7 @@ The actual model might differ from the description in number of layers / units p
 
 <br><br><br><br>
 This project is still ongoing and has not yet yielded any significant results.<br>
+I will clean up and comment the code sometime in the future<br>
 tx_2: this configuration is currently trained on my laptop<br>
 tx_1: second possible configuration in model / hyperparameters but currently not used. If i get my hands on the tpu research cloud, this is where the tpu will work on. Did not get a response yet from the trc team :(
 <br><br>
