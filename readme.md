@@ -20,7 +20,7 @@ Here are just a few things that make trading NNs fail:
   <li> Price does not care about indicators</li>
   <li> With daily candlesticks there is not enough data to train a network without overfitting</li>
   <li> Higher timeframe movement is influenced on fundamentals and this is not included in candlestick based training</li>
-  <li> Most Developers do know much about Deep learning and Neural Networks but do not know about the markets and do not know how to prepare candlestick data that a Neural Network can learn from it. A NN will not learn from a price vector of 20-40 bars scaled to -1 and 1 because it has no information that can be learned. (data preporcessing)
+  <li> Most Developers do know much about Deep learning and Neural Networks but do not know about the markets and do not know how to prepare candlestick data that a Neural Network can learn from it. A NN will not learn from a price vector of 20-40 bars scaled to -1 and 1 because it has no information that can be learned. (data preprocessing)
 </ol>
     
 
@@ -29,7 +29,7 @@ I will not remake the ICT mentorship in this but here are some main ideas about 
   <li>Price is delivered by an algorithm, it is rule based and not random - <b>This can be learned by a neural network</b></li>
   <li>Intraday volatility is controlled to the Pip based on time and price</li>
   <li>A neural network should be able to determine the next draw on liquidity based on HTF charts and LTF charts and get fair value entries</li>
-  <li>The input data for the neural network needs to have the information to solve #3 - for this it has to carry information about pd arrays</li>
+  <li>The input data for the neural network needs to have the information to solve #3 - for this it has to carry information about time and price</li>
   <li>The neural network needs to be able to process the input data in a way that it can extract the important information (so not use just rnn with a simple price vector)</li>
 </ul>
 
@@ -60,7 +60,7 @@ When every chart is processed, the information will be put together to a single 
 The output layer has 2 neurons: first one for long, second for short.<br><br>
 Notice, there is no output for do nothing/hold. This is because if there is a do nothing action, it would be the most used action and there would be very few training samples for other actions. This Model is long or short. But always has to prefer one of it!<br><br>
 
-<h3>Main features of this Project</h3>
+<h3>Main features of this project</h3>
 <ul>
   <li>Brokerage fees are included in training (15/100000 - this is higher than a good broker offers)</li>
   <li>Calculations are done on the 5min timeframe for high number of training samples and precision in trade execution (it is way more precise than enter a position on a daily close)</li>
