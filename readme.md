@@ -48,22 +48,25 @@ the last column of the image represents the current price (the same as the closi
 <img src = "r1.jpg" title="Input image">
 
 <h4>2: The model</h4>
-The input images are filtered by a Conv2D with a filter size of 9x9 (time of writing) to detect pd arrays. currently 64 filters (time of writing) are used. <br>
+The input images are filtered by a Conv2D with a filter size of 9x9 (time of writing) to detect basic pd arrays like highs/lows, rejection blocks, gaps or potential orderblocks. Currently 64 filters (time of writing) are used. <br>
 The result will be a 101x121x64 image. The input image will be the channel 65 in the image. A Dense layer with 64 units is used to get the channels back to 64. <br>
 Every timestep has a column of 101px and 64 channels. There are 121 timesteps.<br>
 For every timestep the 101x64 data points are flattened to a single vector. The result is a data format of (batch_dim, timestep, features).<br>
-After some dense layers to lower the features dimension this can be pushed into transformer encoders (Transformers are just good at everything and i wanted to do somethig with transformers).<br>
-Because this is a DQN and not a generator we need a data format of (batch_dim, features) without a vector for every timestep. This is done by a simple GRU<br>
-After some dense layer post-processing the chart analysis is ready!<br><br>
+After some dense layers to lower the features dimension this can be pushed into transformer encoders (Transformers are just good at everything and i wanted to do somethig with transformers). The transformer encoders can analyze the relationships between the pd arrays and time. This can verify or negate pd arrays and detect more pd arrays that a Conv2d can not detect like breaker blocks or mitigation blocks. With all this together the neural network can form a narrative of price and use it for further analysis.<br>
+Because this is a DQN and not a generator we need a data format of (batch_dim, features) without a vector for every timestep. This is done by a simple GRU.<br>
+After some dense layer post-processing the chart analysis is ready! A single vector of 256 units (time of writing) will carry all neccesary information about the chart, time, price and narrative.<br><br>
+
 All charts will be processed by the same layers with the same weights because price is fractal and the imbalance of samples (5min vs 1D) would make the htf chart layers difficult to learn. This is why they all get the same weights.<br>
-When every chart is processed, the information will be put together to a single large vector. Everything after this is dense layer processing until the output layer.<br>
+When every chart is processed, all the information (256 units for every chart) will be put together to a single large vector. Everything after this is dense layer processing until the output layer.<br>
 The output layer has 2 neurons: first one for long, second for short.<br><br>
 Notice, there is no output for do nothing/hold. This is because if there is a do nothing action, it would be the most used action and there would be very few training samples for other actions. This Model is long or short. But always has to prefer one of it!<br><br>
+The actual model might differ from the description in number of layers / units per layer but it follows the logic of the description.
 
+<br><br>
 <h3>Main features of this project</h3>
 <ul>
   <li>Brokerage fees are included in training (15/100000 - this is higher than a good broker offers)</li>
-  <li>Calculations are done on the 5min timeframe for high number of training samples and precision in trade execution (it is way more precise than enter a position on a daily close)</li>
+  <li>Calculations are done on the 5min timeframe for high number of training samples and more precision in trade execution (it is way more precise to enter a position on a 5min close than a daily close)</li>
   <li>training data is about 20 years on 15 currency pairs, 7/15 are USD pairs</li>
   <li>The NN has an awareness of time and Price</li>
   <li>The NN can detect and process PD-arrays</li>
@@ -72,6 +75,5 @@ Notice, there is no output for do nothing/hold. This is because if there is a do
 
 <br><br><br><br>
 This project is still ongoing and has not yet yielded any significant results.<br>
-tx_1: support for tf strategy for multiple gpus or tpus (kaggle or tpu research cloud), currently trained on kaggle at https://www.kaggle.com/bpwqsdd/ipda-vs-dqn-5
-
-tx_2: single gpu, currently trained on my laptop
+tx_2: this configuration is currently trained on my laptop
+tx_1: second possible configuration in model / hyperparameters but currently not used. If i get my hands on the tpu research cloud, this is where the tpu will work on. Did not get a response yet from the trc team :(
