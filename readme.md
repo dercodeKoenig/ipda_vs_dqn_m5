@@ -70,7 +70,8 @@ Notice, there is no output for do nothing/hold. This is because if there is a do
   <li>The NN uses multiple timeframes (this is important, trust me! (or watch ICT))</li>
 </ul>  
 
-
+<br><br><br><br>
+This project is still ongoing and has not yet yielded any significant results.<br>
 tx_1: support for tf strategy for multiple gpus or tpus (kaggle or tpu research cloud), currently trained on kaggle at https://www.kaggle.com/bpwqsdd/ipda-vs-dqn-5
 
 tx_2: single gpu, currently trained on my laptop
