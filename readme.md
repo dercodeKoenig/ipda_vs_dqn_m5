@@ -75,5 +75,29 @@ The actual model might differ from the description in number of layers / units p
 
 <br><br><br><br>
 This project is still ongoing and has not yet yielded any significant results.<br>
-tx_2: this configuration is currently trained on my laptop
+tx_2: this configuration is currently trained on my laptop<br>
 tx_1: second possible configuration in model / hyperparameters but currently not used. If i get my hands on the tpu research cloud, this is where the tpu will work on. Did not get a response yet from the trc team :(
+<br><br>
+<h3>The DQNAgent</h3>
+I tried many implementations of a dqn agent like in keras-rl or tf-agents but i did not get anything to work.<br>
+So i created my own implementation of a dqn. This version supports:<br>
+<li>multiple model inputs of different input shapes</li>
+<li>training on a tf strategy for TPUs or multiple GPUs (use strategy_dqn file)</li>
+<li>multiple environments will get batched together for the action selection process</li>
+<br>
+<h4>How to use DQNAgent class in your project?</h4>
+you need to code an environment class with this structure:<br><br>
+
+class environment:<br>
+  &emsp;def __init__(self, ...):<br>
+    &emsp;&emsp;...<br>
+  &emsp;def reset(self, first_reset = False):<br>
+    &emsp;&emsp;...<br>
+    &emsp;&emsp;return [observation1, observation2...]<br>
+   &emsp;def step(self, action):<br>
+    &emsp;&emsp;...<br>
+    &emsp;&emsp;return [observation1, observation2...], reward, done # (done = True/False)<br>
+    
+<br><br>
+Important for this dqn: your environment has to return a list of observations for every model input! if your model has only 1 input, you have to return a list of 1 element!<br>
+
