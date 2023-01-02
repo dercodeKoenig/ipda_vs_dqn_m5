@@ -3,7 +3,7 @@ import numpy as np
 from collections import deque
 import os
 import random
-
+import cv2
 
 def Load(file):
     f = open(file, "rb")
@@ -21,13 +21,17 @@ class candle_class:
         self.t=t
 
 class environment:
-    def __init__(self, data_dir, dlen, res_high, comm, pos_size):
+    def __init__(self, data_dir, dlen, res_high, comm, pos_size, render =False):
         #self.data_dir = "./archive"
         self.data_dir = data_dir
         self.dlen = dlen
         self.res_high = res_high
         self.comm = comm
         self.pos_size = pos_size
+        self.render=render
+        if render:
+            self.id = str(random.random())
+            self.positions = deque(maxlen = int(dlen))
       
 
     def reset(self, first = False):
@@ -101,6 +105,8 @@ class environment:
         reward = self.equity - last_equity
         next_observation = [self.scale_candles(self.m5_candles),self.scale_candles(self.m15_candles), self.scale_candles(self.h1_candles), self.scale_candles(self.h4_candles), self.scale_candles(self.d1_candles), self.position]
             
+        if self.render:
+            self.plot_candles()
         return next_observation, reward, len(self.candles) == self.current_index
         
         
@@ -219,3 +225,44 @@ class environment:
         return np.array(image, dtype = "float32").T
         
         
+        
+   
+    def plot_candles(self):
+        self.positions.append(self.position)
+        if len(self.positions)!=self.dlen:
+            return
+            
+    
+        def scale_p(p):
+            return (p - max_l) / hlrange * h
+        candles=self.m5_candles
+        w = 400
+        h = 300
+        canvas = np.zeros((h,w,3), np.uint8) 
+        l = self.dlen
+        single_candle_w = w / l * 0.95
+        max_h = 0
+        max_l = 1000000
+        for i in candles:
+            if i.h > max_h:
+                max_h = i.h
+            if i.l < max_l:
+                max_l = i.l
+        hlrange = max_h - max_l
+
+        for i in range(len(candles)):  
+            
+            color = (0,100,0) if self.positions[i] == 1 else (0,0,100)
+            cv2.rectangle(canvas, (int(i*single_candle_w),int(scale_p(candles[i].o))), (int((i+1)*single_candle_w),int(scale_p(candles[i].c))), color, -1)
+            cv2.line(canvas, (int((i+0.5)*single_candle_w),int(scale_p(candles[i].h))), (int((i+0.5)*single_candle_w),int(scale_p(candles[i].l))), color)
+
+      
+        canvas = canvas[::-1]
+
+        cv2.imshow(self.id, canvas)
+        cv2.waitKey(1)
+
+
+    def __del__(self):
+        if self.render:
+            cv2.destroyWindow (self.id)
