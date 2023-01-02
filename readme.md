@@ -69,7 +69,7 @@ The actual model might differ from the description in number of layers / units p
   <li>Calculations are done on the 5min timeframe for high number of training samples and more precision in trade execution (it is way more precise to enter a position on a 5min close than a daily close)</li>
   <li>training data is about 20 years on 15 currency pairs, 7/15 are USD pairs</li>
   <li>The NN has an awareness of time and Price</li>
-  <li>The NN can detect and process PD-arrays</li>
+  <li>The NN architecture can detect and process PD-arrays</li>
   <li>The NN uses multiple timeframes (this is important, trust me! (or watch ICT))</li>
 </ul>  
 
@@ -77,7 +77,7 @@ The actual model might differ from the description in number of layers / units p
 This project is still ongoing and has not yet yielded any significant results.<br>
 I will clean up and comment the code sometime in the future<br>
 tx_2: this configuration is currently trained on my laptop<br>
-tx_1: second possible configuration in model / hyperparameters but currently not used. If i get my hands on the tpu research cloud, this is where the tpu will work on. Did not get a response yet from the trc team :(<br>
+tx_1: second possible configuration in model / hyperparameters. Multi-GPU support tested on kaggle: https://www.kaggle.com/code/bpwqsdd/ipda-vs-dqn-5<br> If i get my hands on the tpu research cloud, this is where the tpu will work on. Did not get a response yet from the trc team :(<br>
 tx_3: some modification to allow a "no position" action
 <br><br>
 <h3>The DQNAgent</h3>
