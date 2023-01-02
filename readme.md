@@ -77,7 +77,8 @@ The actual model might differ from the description in number of layers / units p
 This project is still ongoing and has not yet yielded any significant results.<br>
 I will clean up and comment the code sometime in the future<br>
 tx_2: this configuration is currently trained on my laptop<br>
-tx_1: second possible configuration in model / hyperparameters but currently not used. If i get my hands on the tpu research cloud, this is where the tpu will work on. Did not get a response yet from the trc team :(
+tx_1: second possible configuration in model / hyperparameters but currently not used. If i get my hands on the tpu research cloud, this is where the tpu will work on. Did not get a response yet from the trc team :(<br>
+tx_3: some modification to allow a "no position" action
 <br><br>
 <h3>The DQNAgent</h3>
 I tried many implementations of a dqn agent like in keras-rl or tf-agents but i did not get anything to work.<br>
