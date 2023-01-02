@@ -6,7 +6,7 @@ import random
 import time
 
 
-use_jit = False
+use_jit = True
 
 class DQNAgent:
     def __init__(self, model,
