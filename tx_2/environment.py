@@ -96,7 +96,7 @@ class environment:
             return -1
             
         current_close = self.m15_candles[-1].c
-        if reset_entry_price: self.entry_price = self.m15_candles[-1].o
+        if reset_entry_price: self.entry_price = self.m5_candles[-1].o
         
         percent_change = (current_close - self.entry_price) / self.entry_price
 
