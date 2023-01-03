@@ -17,7 +17,9 @@ class DQNAgent:
                  name = "dqn1",
                  target_model_sync = 1000,
                  exploration = 0.01,
+                 output_dir = "./"
                 ):
+        self.output_dir = output_dir
         self.exploration = exploration
         self.gamma = gamma
         self.n_actions = n_actions
@@ -31,9 +33,10 @@ class DQNAgent:
         self.target_model_sync = target_model_sync
         self.num_model_inputs = len(self.model.inputs)
         self.num_envs = 0
-        if not os.path.exists("logs"):
-            os.mkdir("logs")
-            print("created ./logs")
+        if not os.path.exists(self.output_dir):
+            os.mkdir(self.output_dir)
+        if not os.path.exists(self.output_dir+"logs"):
+            os.mkdir(self.output_dir+"logs")
         self.memory = deque(maxlen = self.memory_size)
       
     
@@ -41,9 +44,9 @@ class DQNAgent:
         self.target_model.set_weights(self.model.get_weights())
       
     def load_weights(self):
-        self.model.load_weights(self.name+".h5")
+        self.model.load_weights(self.output_dir+self.name+".h5")
     def save_weights(self):
-        self.model.save_weights(self.name+".h5", overwrite = True)
+        self.model.save_weights(self.output_dir+self.name+".h5", overwrite = True)
         
     @tf.function(jit_compile = False)
     def model_call(self, x):
@@ -140,17 +143,17 @@ class DQNAgent:
         def save_current_run():
             self.save_weights()
             if len(self.losses) > 0:
-                file = open("logs/loss_log.txt", "a")  
+                file = open(self.output_dir+"logs/loss_log.txt", "a")  
                 file.write(str(np.mean(self.losses)))
                 file.write("\n")
                 file.close()
             if len(self.q_v) > 0:
-                file = open("logs/qv_log.txt", "a")  
+                file = open(self.output_dir+"logs/qv_log.txt", "a")  
                 file.write(str(np.mean(self.q_v)))
                 file.write("\n")
                 file.close()
 
-            file = open("logs/rewards_log.txt", "a")  
+            file = open(self.output_dir+"logs/rewards_log.txt", "a")  
             file.write(str(np.mean(self.rewards)))
             file.write("\n")
             file.close()
