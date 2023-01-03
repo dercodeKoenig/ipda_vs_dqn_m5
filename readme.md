@@ -77,7 +77,7 @@ The actual model might differ from the description in number of layers / units p
 This project is still ongoing and has not yet yielded any significant results.<br>
 I will clean up and comment the code sometime in the future<br><br>
 Project at kaggle:<br> 
-https://www.kaggle.com/code/bpwqsdd/ipda-vs-dqn-5-tx2-tpu/notebook<br>
+https://www.kaggle.com/code/bpwqsdd/ipda-vs-dqn-5-tx2-tpu<br>
 https://www.kaggle.com/code/bpwqsdd/ipda-vs-dqn-5-tx1-gpu<br>
 <br><br>
 <h3>The DQNAgent</h3>
