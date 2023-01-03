@@ -89,6 +89,9 @@ class environment:
                 self.position = -1
                 self.balance -= self.pos_size * self.comm
                 reset_entry_price = True
+        if action == 2: # no position
+            if self.position != 0:
+                self.close()
         
         
         if self.get_sample_candles() == -1:
@@ -98,9 +101,11 @@ class environment:
         current_close = self.m15_candles[-1].c
         if reset_entry_price: self.entry_price = self.m5_candles[-1].o
         
-        percent_change = (current_close - self.entry_price) / self.entry_price
-
-        self.equity = self.balance + percent_change * self.pos_size * self.position
+        if self.position != 0:
+            percent_change = (current_close - self.entry_price) / self.entry_price
+            self.equity = self.balance + percent_change * self.pos_size * self.position
+        else:
+            self.equity = self.balance
         
         reward = self.equity - last_equity
         next_observation = [self.scale_candles(self.m5_candles),self.scale_candles(self.m15_candles), self.scale_candles(self.h1_candles), self.scale_candles(self.h4_candles), self.scale_candles(self.d1_candles), self.position]
@@ -252,7 +257,7 @@ class environment:
 
         for i in range(len(candles)):  
             
-            color = (0,100,0) if self.positions[i] == 1 else (0,0,100)
+            color = (0,100,0) if self.positions[i] == 1 else (0,0,100) if self.positions[i] == -1 else (100,100,100)
             cv2.rectangle(canvas, (int(i*single_candle_w),int(scale_p(candles[i].o))), (int((i+1)*single_candle_w),int(scale_p(candles[i].c))), color, -1)
             cv2.line(canvas, (int((i+0.5)*single_candle_w),int(scale_p(candles[i].h))), (int((i+0.5)*single_candle_w),int(scale_p(candles[i].l))), color)
 
