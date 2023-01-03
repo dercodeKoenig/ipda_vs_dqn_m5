@@ -5,7 +5,7 @@ from collections import deque
 import random
 import time
 
-use_jit = False
+#use_jit = False
 
 class DQNAgent:
     def __init__(self, model,
@@ -52,8 +52,8 @@ class DQNAgent:
     def save_weights(self):
         self.model.save_weights(self.output_dir+self.name+".h5", overwrite = True)
         
-    @tf.function(jit_compile = use_jit)
-    #@tf.function()
+    #@tf.function(jit_compile = use_jit)
+    @tf.function()
     def model_call(self, x):
         return tf.math.argmax(self.model(x), axis = 1)
     
@@ -82,8 +82,8 @@ class DQNAgent:
     def observe_sasrt(self, state, action, next_state, reward, terminal):
         self.memory.append([state, action, reward, 1-int(terminal), next_state])
         
-    @tf.function(jit_compile = use_jit)
-    #@tf.function()
+    #@tf.function(jit_compile = use_jit)
+    @tf.function()
     def get_target_q(self, next_states, rewards, terminals):
         estimated_q_values_next = self.target_model(next_states)
         q_batch = tf.math.reduce_max(estimated_q_values_next, axis=1)
@@ -91,8 +91,8 @@ class DQNAgent:
         return target_q_values
 
         
-    @tf.function(jit_compile = use_jit)
-    #@tf.function()
+    #@tf.function(jit_compile = use_jit)
+    @tf.function()
     def tstep(self, data):
         states, next_states, rewards, terminals, masks = data
         target_q_values = self.get_target_q(next_states, rewards, terminals)
