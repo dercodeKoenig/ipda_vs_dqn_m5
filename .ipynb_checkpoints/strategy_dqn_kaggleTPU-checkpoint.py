@@ -218,8 +218,8 @@ class DQNAgent:
                 
                 if i > warmup:
                         loss, q = self.update_parameters()
-                        self.losses.append(np.mean([[o.numpy() for o in i.values] for i in loss]))
-                        self.q_v.append(np.mean([[o.numpy() for o in i.values] for i in q]))
+                        self.losses.append(np.mean([x.numpy() for x in loss.values]))
+                        self.q_v.append(np.mean([x.numpy() for x in q.values]))
                         
 
                 else:
