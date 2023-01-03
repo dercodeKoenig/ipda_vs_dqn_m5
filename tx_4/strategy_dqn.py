@@ -5,7 +5,6 @@ from collections import deque
 import random
 import time
 
-
 use_jit = False
 
 class DQNAgent:
