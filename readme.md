@@ -76,7 +76,6 @@ The actual model might differ from the description in number of layers / units p
 <br><br><br><br>
 This project is still ongoing and has not yet yielded any significant results.<br>
 I will clean up and comment the code sometime in the future<br>
-tx_1-x: multiple configurations of model / hyperparameters. the environment.py and dqn.py files are all the same
 <br><br>
 <h3>The DQNAgent</h3>
 I tried many implementations of a dqn agent like in keras-rl or tf-agents but i did not get anything to work.<br>
