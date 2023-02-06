@@ -198,8 +198,9 @@ class environment:
             hour = int(t.split(":")[0])
             minute = int(t.split(":")[1])
             total = hour * 60 + minute
-            max_t = 24*60
-            scaled = total / max_t
+            #max_t = 24*60
+            #scaled = total / max_t
+            scaled = total / 5
             return scaled
             
         
